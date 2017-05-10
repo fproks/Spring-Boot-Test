@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class WebSocketController {
     private MyWebSocket myWebSocket;
 
     @RequestMapping("/test")
-    public void sendMessage(){
+    public void sendMessage() throws IOException {
         new Thread(() -> {
             for(int i=0;i<10;i++) {
                 Date date =new Date();
@@ -32,6 +33,7 @@ public class WebSocketController {
             }
         }).start();
 
+        //因为是多播，因此不能够直接发送，应该对每个进行发送，因此不能直接使用sendMessage
         myWebSocket.onMessage("finished!");
     }
 }
